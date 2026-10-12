@@ -30,32 +30,32 @@ while running == True:
     ) 
     pygame.draw.circle( # draws the head of character
         screen, player_colour,
-        (player_x, player_y - 110), 15, 4
+        (player_x, player_y - 110), 15, 0
     )
     pygame.draw.line( # draws the body of character
         screen, player_colour,
         (player_x, player_y - 95),
-        (player_x, player_y - 45), 4
+        (player_x, player_y - 45), 6
     )
     pygame.draw.line( # draws the left arm of character
         screen, player_colour,
         (player_x, player_y - 80),
-        (player_x - 30, player_y - 55), 5
+        (player_x - 30, player_y - 55), 8
     )
     pygame.draw.line( # draws the right arm of character
         screen, player_colour,
         (player_x, player_y - 80),
-        (player_x + 30, player_y - 55), 5
+        (player_x + 30, player_y - 55), 8
     )
     pygame.draw.line( # draws the left leg of character
         screen, player_colour,
         (player_x, player_y - 45),
-        (player_x - 20, player_y), 5
+        (player_x - 20, player_y), 8
     )
     pygame.draw.line( # draws the right leg of character
         screen, player_colour,
         (player_x, player_y - 45),
-        (player_x + 20, player_y), 5
+        (player_x + 20, player_y), 8
     )
     pygame.display.flip() # updates the window w everything thats been drawn until the next flip()
     clock.tick(60) # limits game to 60 fps
