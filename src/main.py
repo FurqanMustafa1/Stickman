@@ -1,10 +1,14 @@
-import pygame
+import pygame # drawing the game stuff 
+import pymunk # phsyics engine for game 
 
 pygame.init()
 
-screen = pygame.display.set_mode((1344, 756)) # 1920x1080 window
+screen = pygame.display.set_mode((1344, 756)) # 1344x756 window
 pygame.display.set_caption("Stickman") #the title thingy
 clock = pygame.time.Clock()
+
+space = pymunk.Space() # spaces holds physics objects and their interactions
+space.gravity = (0, 900) # (x,y) , 0 horizontal pull from gravity, 900 vertical pull from gravity
 
 running = True
 while running == True:
@@ -12,10 +16,12 @@ while running == True:
         if event.type == pygame.QUIT:
             running = False
 
+    space.step(1/60) # updates physics engine every second - matches fps of game
+    
     screen.fill((30, 30, 40)) #makes window's background kinda dark
     pygame.draw.rect(
         screen,
-        (110,75,45),
+        (110, 75, 45),
         (0, screen.get_height() - 100, screen.get_width(), 100)
     ) # draws the ground at the bottom of window
     pygame.display.flip() # updates the window w everything thats been drawn until the next flip()
