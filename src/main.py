@@ -10,8 +10,8 @@ clock = pygame.time.Clock()
 space = pymunk.Space() # spaces holds physics objects and their interactions
 space.gravity = (0, 900) # (x,y) , 0 horizontal pull from gravity, 900 vertical pull from gravity
 
-player_x = screen.getwidth() // 2 # places character in middle of window
-player_y = screen.getheight() - 100 # places player on the ground
+player_x = screen.get_width() // 2 # places character in middle of window
+player_y = screen.get_height() - 100 # places player on the ground
 player_colour = (230, 230, 230) # greyish colour for player - contrasts with dark background
 
 running = True
