@@ -12,29 +12,29 @@ space.gravity = (0, 900) # (x,y) , 0 horizontal pull from gravity, 900 vertical 
 
 ground_y = screen.get_height() - 100 # y coordinate of ground
 
-floor = pymunk.Segment(
+floor = pymunk.Segment( # adds a floor in the physics engine
     space.static_body,
     (0, ground_y),
     (screen.get_width(), ground_y),
     0
 )
-floor.friction = 0.7
-space.add(floor)
+floor.friction = 0.7 # adds friction to the floor so no sliding around
+space.add(floor) # adds floor to physics engine
 
-player_width = 60
+player_width = 60 # players width and height and colour for drawing the player
 player_height = 125
 player_colour = (230, 230, 230)
 
-player_body = pymunk.Body(1, float("inf"))
-player_body.position = (screen.get_width() // 2, 200)
+player_body = pymunk.Body(1, float("inf")) # creates body for player with mass of 1 and infinite moment so the player stays upright and doesnt rotate
+player_body.position = (screen.get_width() // 2, 200) # gets the bodies position and places it 200 pixels from top and in the centre of window
 
-player_shape = pymunk.Poly.create_box(
+player_shape = pymunk.Poly.create_box( # creates a box shape to detect collisions, invisible
     player_body,
     (player_width, player_height)
 )
-player_shape.friction = 0.7
+player_shape.friction = 0.7 # adds friction to player so it doesnt slide around on the ground
 
-space.add(player_body, player_shape)
+space.add(player_body, player_shape) # adds players body and shape to physics engine
 
 running = True
 while running == True:
@@ -44,10 +44,11 @@ while running == True:
 
     space.step(1/60) # updates physics engine every second - matches fps of game
 
-    player_x = round(player_body.position.x)
-    player_y = round(
+    player_x = round(player_body.position.x) # players x position from centre of player
+    player_y = round( # players y position from centre of player
         player_body.position.y + player_height / 2
         )
+    
     screen.fill((30, 30, 40)) #makes window's background kinda dark
     pygame.draw.rect( # draws the ground at the bottom of window
         screen,
