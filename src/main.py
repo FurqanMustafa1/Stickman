@@ -26,7 +26,7 @@ player_height = 125
 player_colour = (230, 230, 230)
 
 player_body = pymunk.Body(1, float("inf"))
-player_body.position = (screen.getwidth() // 2, 200)
+player_body.position = (screen.get_width() // 2, 200)
 
 player_shape = pymunk.Poly.create_box(
     player_body,
