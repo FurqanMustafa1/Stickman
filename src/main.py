@@ -1,7 +1,7 @@
 import pygame # drawing the game stuff 
 import pymunk # phsyics engine for game 
 
-pygame.init()
+pygame.init() # initialises pygame
 
 screen = pygame.display.set_mode((1344, 756)) # 1344x756 window
 pygame.display.set_caption("Stickman") #the title thingy
@@ -10,9 +10,31 @@ clock = pygame.time.Clock()
 space = pymunk.Space() # spaces holds physics objects and their interactions
 space.gravity = (0, 900) # (x,y) , 0 horizontal pull from gravity, 900 vertical pull from gravity
 
-player_x = screen.get_width() // 2 # places character in middle of window
-player_y = screen.get_height() - 100 # places player on the ground
-player_colour = (230, 230, 230) # greyish colour for player - contrasts with dark background
+ground_y = screen.get_height() - 100 # y coordinate of ground
+
+floor = pymunk.Segment(
+    space.static_body,
+    (0, ground_y),
+    (screen.get_width(), ground_y),
+    0
+)
+floor.friction = 0.7
+space.add(floor)
+
+player_width = 60
+player_height = 125
+player_colour = (230, 230, 230)
+
+player_body = pymunk.Body(1, float("inf"))
+player_body.position = (screen.getwidth() // 2, 200)
+
+player_shape = pymunk.Poly.create_box(
+    player_body,
+    (player_width, player_height)
+)
+player_shape.friction = 0.7
+
+space.add(player_body, player_shape)
 
 running = True
 while running == True:
@@ -21,7 +43,11 @@ while running == True:
             running = False
 
     space.step(1/60) # updates physics engine every second - matches fps of game
-    
+
+    player_x = round(player_body.position.x)
+    player_y = round(
+        player_body.position.y + player_height / 2
+        )
     screen.fill((30, 30, 40)) #makes window's background kinda dark
     pygame.draw.rect( # draws the ground at the bottom of window
         screen,
