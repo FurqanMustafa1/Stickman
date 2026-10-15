@@ -38,6 +38,9 @@ space.add(player_body, player_shape) # adds players body and shape to physics en
 
 move_speed = 300 # movement speed in pixels per sec
 
+left_limit = player_width / 2 + 4
+right_limit = screen.get_width() - player_width / 2 - 4
+
 running = True
 while running == True:
     for event in pygame.event.get(): # checks for actions like close button being clicked
@@ -60,6 +63,13 @@ while running == True:
     )
 
     space.step(1/60) # updates physics engine every 1/60 of a second - matches fps of game
+
+    if player_body.position.x < left_limit:
+        player_body.position = (left_limit, player_body.position.y)
+        player_body.velocity = (0, player_body.velocity.y)
+    elif player_body.position.x > right_limit:
+        player_body.position = (right_limit, player_body.position.y)
+        player_body.velocity = (0, player_body.velocity.y)
 
     player_x = round(player_body.position.x) # players x position from centre of player
     player_y = round( # players y position from centre of player
