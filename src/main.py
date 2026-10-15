@@ -36,13 +36,30 @@ player_shape.friction = 0.7 # adds friction to player so it doesnt slide around 
 
 space.add(player_body, player_shape) # adds players body and shape to physics engine
 
+move_speed = 300 # movement speed in pixels per sec
+
 running = True
 while running == True:
     for event in pygame.event.get(): # checks for actions like close button being clicked
         if event.type == pygame.QUIT:
             running = False
 
-    space.step(1/60) # updates physics engine every second - matches fps of game
+    keys = pygame.key.get_pressed() # checks to see if any keys get pressed
+
+    movement_x = 0 # each frame starts with 0 movement in the x direction
+
+    if keys[pygame.K_a] or keys[pygame.K_LEFT]: # if either a or the left arrow is clicked, the player moves left.
+        movement_x -= move_speed # moves player left by taking away movespeed from movement_x
+
+    if keys[pygame.K_d] or keys[pygame.K_RIGHT]: # if either d or the right arrow is clicked, the player moves right.
+        movement_x += move_speed # moves player right by adding movespeed to movement_x
+
+    player_body.velocity = (
+        movement_x,
+        player_body.velocity.y
+    )
+
+    space.step(1/60) # updates physics engine every 1/60 of a second - matches fps of game
 
     player_x = round(player_body.position.x) # players x position from centre of player
     player_y = round( # players y position from centre of player
