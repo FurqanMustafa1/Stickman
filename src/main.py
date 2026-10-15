@@ -38,8 +38,8 @@ space.add(player_body, player_shape) # adds players body and shape to physics en
 
 move_speed = 300 # movement speed in pixels per sec
 
-left_limit = player_width / 2 + 4
-right_limit = screen.get_width() - player_width / 2 - 4
+left_limit = player_width / 2 + 4 # adds a limit to how far left player can go - allows 4 pixels of leeway for the players body so it doeesnt get stuck in wall
+right_limit = screen.get_width() - player_width / 2 - 4 # adds a limit to how far right player can go - allows 4 pixels of leeway for the players body so it doesnt get stuck in wall
 
 running = True
 while running == True:
@@ -57,17 +57,17 @@ while running == True:
     if keys[pygame.K_d] or keys[pygame.K_RIGHT]: # if either d or the right arrow is clicked, the player moves right.
         movement_x += move_speed # moves player right by adding movespeed to movement_x
 
-    player_body.velocity = (
+    player_body.velocity = ( # calculattes the players velocity based on horizontal speed and vertical speed
         movement_x,
         player_body.velocity.y
     )
 
     space.step(1/60) # updates physics engine every 1/60 of a second - matches fps of game
 
-    if player_body.position.x < left_limit:
+    if player_body.position.x < left_limit: # if statement to keep player within the left boundary of the window
         player_body.position = (left_limit, player_body.position.y)
         player_body.velocity = (0, player_body.velocity.y)
-    elif player_body.position.x > right_limit:
+    elif player_body.position.x > right_limit: # if statement to keep player within the right boundary of the window
         player_body.position = (right_limit, player_body.position.y)
         player_body.velocity = (0, player_body.velocity.y)
 
