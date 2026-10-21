@@ -12,12 +12,7 @@ space.gravity = (0, 900) # (x,y) , 0 horizontal pull from gravity, 900 vertical 
 
 ground_y = screen.get_height() - 100 # y coordinate of ground
 
-floor = pymunk.Segment( # adds a floor in the physics engine
-    space.static_body,
-    (0, ground_y),
-    (screen.get_width(), ground_y),
-    0
-)
+floor = pymunk.Segment(space.static_body, (0, ground_y), (screen.get_width(), ground_y), 0) # adds a floor in the physics engine
 floor.friction = 0.7 # adds friction to the floor so no sliding around
 space.add(floor) # adds floor to physics engine
 
@@ -28,10 +23,7 @@ player_colour = (230, 230, 230)
 player_body = pymunk.Body(1, float("inf")) # creates body for player with mass of 1 and infinite moment so the player stays upright and doesnt rotate
 player_body.position = (screen.get_width() // 2, 200) # gets the bodies position and places it 200 pixels from top and in the centre of window
 
-player_shape = pymunk.Poly.create_box( # creates a box shape to detect collisions, invisible
-    player_body,
-    (player_width, player_height)
-)
+player_shape = pymunk.Poly.create_box(player_body, (player_width, player_height)) # creates a box shape to detect collisions, invisible
 player_shape.friction = 0.7 # adds friction to player so it doesnt slide around on the ground
 
 space.add(player_body, player_shape) # adds players body and shape to physics engine
@@ -41,6 +33,7 @@ move_speed = 300 # movement speed in pixels per sec
 left_limit = player_width / 2 + 4 # adds a limit to how far left player can go - allows 4 pixels of leeway for the players body so it doeesnt get stuck in wall
 right_limit = screen.get_width() - player_width / 2 - 4 # adds a limit to how far right player can go - allows 4 pixels of leeway for the players body so it doesnt get stuck in wall
 
+on_ground = False # variable to see if player is on ground or not. False means in air and true means on ground
 running = True
 while running == True:
     for event in pygame.event.get(): # checks for actions like close button being clicked
@@ -52,17 +45,23 @@ while running == True:
     movement_x = 0 # each frame starts with 0 movement in the x direction
 
     if keys[pygame.K_a] or keys[pygame.K_LEFT]: # if either a or the left arrow is clicked, the player moves left.
-        movement_x -= move_speed # moves player left by taking away movespeed from movement_x
+        movement_x = movement_x - move_speed # moves player left by taking away movespeed from movement_x
 
     if keys[pygame.K_d] or keys[pygame.K_RIGHT]: # if either d or the right arrow is clicked, the player moves right.
-        movement_x += move_speed # moves player right by adding movespeed to movement_x
+        movement_x = movement_x + move_speed # moves player right by adding movespeed to movement_x
 
-    player_body.velocity = ( # calculattes the players velocity based on horizontal speed and vertical speed
-        movement_x,
-        player_body.velocity.y
-    )
+    player_body.velocity = (movement_x, player_body.velocity.y) # calculattes the players velocity based on horizontal speed and vertical speed
 
     space.step(1/60) # updates physics engine every 1/60 of a second - matches fps of game
+
+    on_ground = False # resets on_ground to make it false every frame, so it can be checked again if player on ground or not
+    for contact in space.shape_query(player_shape): #checks for collisions between player and other onjects in the space
+        if contact.shape == floor: # if statement to check if player hitbox is colliding with floor
+            on_ground = True # player is on ground
+    if on_ground:
+        pygame.display.set_caption("Stickman - On Ground") # temp title change to show stickman on ground
+    else:
+        pygame.display.set_caption("Stickman - In Air") # temp title change to show stickman in air
 
     if player_body.position.x < left_limit: # if statement to keep player within the left boundary of the window
         player_body.position = (left_limit, player_body.position.y)
