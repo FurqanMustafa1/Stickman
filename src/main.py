@@ -35,6 +35,8 @@ left_limit = (player_width / 2) + 4 # adds a limit to how far left player can go
 right_limit = (screen.get_width() - (player_width / 2)) - 4 # adds a limit to how far right player can go - allows 4 pixels of leeway for the players body so it doesnt get stuck in wall
 
 on_ground = False # variable to see if player is on ground or not. False means in air and true means on ground
+player_state = "falling" # variable to see if player is falling or jumping.
+
 running = True
 while running == True:
     for event in pygame.event.get(): # checks for actions like close button being clicked
@@ -43,7 +45,7 @@ while running == True:
         elif event.type == pygame.KEYDOWN: # checks for key presses
             if event.key == pygame.K_SPACE and on_ground: # if space gets pressed and player is on ground, player jumps
                 player_body.velocity = (player_body.velocity.x, -jump_speed) # sets players vertical velocity to match the jump speed, its negative cuz the y axis is inverted in pygame.
-                on_ground = False # player is in air now so on_ground is set to False
+                on_ground = False # player is in air now so on_ground is set to False so player can't jump again til they on ground
 
     keys = pygame.key.get_pressed() # checks to see if any keys get pressed
 
@@ -63,17 +65,24 @@ while running == True:
     for contact in space.shape_query(player_shape): #checks for collisions between player and other onjects in the space
         if contact.shape == floor: # if statement to check if player hitbox is colliding with floor
             on_ground = True # player is on ground
-    if on_ground:
-        pygame.display.set_caption("Stickman - On Ground") # temp title change to show stickman on ground
-    else:
-        pygame.display.set_caption("Stickman - In Air") # temp title change to show stickman in air
-
+ 
     if player_body.position.x < left_limit: # if statement to keep player within the left boundary of the window
         player_body.position = (left_limit, player_body.position.y)
         player_body.velocity = (0, player_body.velocity.y)
     elif player_body.position.x > right_limit: # if statement to keep player within the right boundary of the window
         player_body.position = (right_limit, player_body.position.y)
         player_body.velocity = (0, player_body.velocity.y)
+
+    if not on_ground: # checks if player is jumping or falling when in air
+        if player_body.velocity.y < 0: # if vertical velocity is negative, player is jumping
+            player_state = "jumping"
+        else: # if vertical velocity is positive, player is falling
+            player_state = "falling"
+    elif abs(player_body.velocity.x) > 0: # if player is on ground and moving horizontally, player is running
+        player_state = "running"
+    else: # if player is on ground and not moving horizontally, player is idle
+        player_state = "idle"
+    pygame.display.set_caption(f"Stickman - {player_state}") # updates the window title to show the players state
 
     player_x = round(player_body.position.x) # players x position from centre of player
     player_y = round( # players y position from centre of player
