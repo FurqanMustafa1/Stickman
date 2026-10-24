@@ -29,9 +29,10 @@ player_shape.friction = 0.7 # adds friction to player so it doesnt slide around 
 space.add(player_body, player_shape) # adds players body and shape to physics engine
 
 move_speed = 300 # movement speed in pixels per sec
+jump_speed = 500 # jump speed in pixels per sec
 
-left_limit = player_width / 2 + 4 # adds a limit to how far left player can go - allows 4 pixels of leeway for the players body so it doeesnt get stuck in wall
-right_limit = screen.get_width() - player_width / 2 - 4 # adds a limit to how far right player can go - allows 4 pixels of leeway for the players body so it doesnt get stuck in wall
+left_limit = (player_width / 2) + 4 # adds a limit to how far left player can go - allows 4 pixels of leeway for the players body so it doeesnt get stuck in wall
+right_limit = (screen.get_width() - (player_width / 2)) - 4 # adds a limit to how far right player can go - allows 4 pixels of leeway for the players body so it doesnt get stuck in wall
 
 on_ground = False # variable to see if player is on ground or not. False means in air and true means on ground
 running = True
@@ -39,6 +40,10 @@ while running == True:
     for event in pygame.event.get(): # checks for actions like close button being clicked
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN: # checks for key presses
+            if event.key == pygame.K_SPACE and on_ground: # if space gets pressed and player is on ground, player jumps
+                player_body.velocity = (player_body.velocity.x, -jump_speed) # sets players vertical velocity to match the jump speed, its negative cuz the y axis is inverted in pygame.
+                on_ground = False # player is in air now so on_ground is set to False
 
     keys = pygame.key.get_pressed() # checks to see if any keys get pressed
 
