@@ -37,6 +37,9 @@ right_limit = (screen.get_width() - (player_width / 2)) - 4 # adds a limit to ho
 on_ground = False # variable to see if player is on ground or not. False means in air and true means on ground
 player_state = "falling" # variable to see if player is falling or jumping.
 
+punch_duration = 0.25 # duration of the punch, seconds
+punch_timer = 0 # timer to keep track of how much time of the punch is left, seconds
+
 running = True
 while running == True:
     for event in pygame.event.get(): # checks for actions like close button being clicked
