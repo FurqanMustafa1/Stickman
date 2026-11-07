@@ -42,13 +42,19 @@ punch_timer = 0 # timer to keep track of how much time of the punch is left, sec
 
 running = True
 while running == True:
+    punch_timer = max(0, punch_timer - 1/60) # decreases punch timer by 1/60 of a sec every frame until it reaches 0
+
     for event in pygame.event.get(): # checks for actions like close button being clicked
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN: # checks for key presses
-            if event.key == pygame.K_SPACE and on_ground: # if space gets pressed and player is on ground, player jumps
+            if event.key == pygame.K_SPACE and on_ground and punch_timer == 0: # if space gets pressed and player is on ground and the player is not mid punch, player jumps
                 player_body.velocity = (player_body.velocity.x, -jump_speed) # sets players vertical velocity to match the jump speed, its negative cuz the y axis is inverted in pygame.
                 on_ground = False # player is in air now so on_ground is set to False so player can't jump again til they on ground
+        elif event.type == pygame.MOUSEBUTTONDOWN: # checks if mouse gets clicked
+            if event.button == 1 and on_ground and punch_timer == 0:  # if left mouse button gets clicked and player is on ground and the player is not mid punch, player punches
+                punch_timer = punch_duration # sets timer to punch duration to start cooldown for next punch
+                print("punch started") # temp check
 
     keys = pygame.key.get_pressed() # checks to see if any keys get pressed
 
