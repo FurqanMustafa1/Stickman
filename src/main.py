@@ -85,7 +85,9 @@ while running == True:
         player_body.position = (right_limit, player_body.position.y)
         player_body.velocity = (0, player_body.velocity.y)
 
-    if not on_ground: # checks if player is jumping or falling when in air
+    if punch_timer > 0: # checks if player is punching
+        player_state = "punching"
+    elif not on_ground: # checks if player is jumping or falling when in air
         if player_body.velocity.y < 0: # if vertical velocity is negative, player is jumping
             player_state = "jumping"
         else: # if vertical velocity is positive, player is falling
