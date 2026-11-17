@@ -66,6 +66,9 @@ while running == True:
     if keys[pygame.K_d] or keys[pygame.K_RIGHT]: # if either d or the right arrow is clicked, the player moves right.
         movement_x = movement_x + move_speed # moves player right by adding movespeed to movement_x
 
+    if punch_timer > 0: # checks to see if player is punching.
+        movement_x = 0 # no horizontal movement while player is punching.
+
     player_body.velocity = (movement_x, player_body.velocity.y) # calculattes the players velocity based on horizontal speed and vertical speed
 
     space.step(1/60) # updates physics engine every 1/60 of a second - matches fps of game
