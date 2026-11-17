@@ -58,7 +58,7 @@ while running == True:
 
     keys = pygame.key.get_pressed() # checks to see if any keys get pressed
 
-    movement_x = 0 # each frame starts with 0 movement in the x direction
+    movement_x = 0 # each frame starts with no movement in the x direction
 
     if keys[pygame.K_a] or keys[pygame.K_LEFT]: # if either a or the left arrow is clicked, the player moves left.
         movement_x = movement_x - move_speed # moves player left by taking away movespeed from movement_x
